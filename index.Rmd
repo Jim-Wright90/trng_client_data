@@ -1,0 +1,68 @@
+---
+title: "TRNG Client Data"
+output:
+  html_document:
+    theme: spacelab
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r setup 1, include=FALSE}
+library(tidyverse)
+library(rio)
+library(here)
+library(colorblindr)
+library(gghighlight)
+library(forcats)
+library(ggrepel)
+library(gt)
+library(knitr)
+library(kableExtra)
+library(reactable)
+library(plotly)
+library(SCVA)
+library(patchwork)
+
+theme_set(theme_minimal(15) +
+            theme(legend.position = "bottom",
+                  panel.grid.major.x = element_line(color = "gray60"),
+                  panel.grid.minor.x = element_blank(),
+                  panel.grid.major.y = element_blank())
+          )
+
+
+class_self_1 <- import(here("data", "TRNG_class_self_1.xlsx"),
+               setclass = "tbl_df") 
+
+class_self_2 <- import(here("data", "TRNG_class_self_2.xlsx"),
+               setclass = "tbl_df") 
+
+```
+
+## CLASS
+
+```{r, include=FALSE}
+class_self_all <- bind_rows(class_self_1, class_self_2)
+
+class_tbl <- class_self_all %>% 
+  reactable(
+    columns = list(
+      `Question` = colDef(align = "center"),
+      `Response` = colDef(align = "center")),
+    pagination = FALSE,
+    striped = TRUE,
+    outlined = TRUE,
+    compact = TRUE,
+    highlight = TRUE,
+    bordered = TRUE,
+    searchable = TRUE,
+    height = 600,
+    width = 600)
+```
+
+```{r, include=TRUE}
+class_tbl
+```
